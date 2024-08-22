@@ -13,25 +13,29 @@ struct ContentView: View {
     @State private var renderedImage: Image?
     @Environment(\.colorScheme) private var colorScheme
     private var deviceType = UIDevice.current.userInterfaceIdiom
+    // Acceder a las variables de entorno horizontal y vertical para cuando el celular esté en landscape poder modificar el tamaño del botón y de la quote para que no se recorte.
     
     var body: some View {
         GeometryReader { geometry in
             
             VStack {
-                // Acceder a la variable de entorno (\.colorScheme) para determinar si mostramos el logo normal o en negativo. Además, revisar las dimensiones del logo, ya que hay un frame por defecto con la imagen.
+
                 if colorScheme == .light {
                     Image("TechQuotesLogoLight")
                         .resizable()
                         .scaledToFit()
-                        .frame(maxWidth: 200, maxHeight: 200)
+                        .background(Color.orange)
+                        .frame(maxWidth: 200)
+                        .padding(.top, geometry.safeAreaInsets.top)
                 } else {
                     Image("TechQuotesLogoDark")
                         .resizable()
                         .scaledToFit()
-                        .frame(maxWidth: 200, maxHeight: 200)
+                        .background(Color.orange)
+                        .frame(maxWidth: 200)
+                        .padding(.top, geometry.safeAreaInsets.top)
                 }
-//                    .scaledToFit()
-//                    .clipped()
+                
                 
                 Spacer()
                 

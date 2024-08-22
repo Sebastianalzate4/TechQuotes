@@ -15,22 +15,19 @@ struct TechQuoteView: View {
     
     var body: some View {
         
-        VStack {
+        VStack(alignment: .trailing) {
             Text(viewModel.randomQuote?.quote ?? "")
                 .italic()
                 .font(.title2)
                 .multilineTextAlignment(.center)
                 .padding()
+         
+            Text("~ \(viewModel.randomQuote?.author ?? "")")
+                .font(.title3)
+                .padding()
             
-            HStack {
-                Spacer()
-                Text("~ \(viewModel.randomQuote?.author ?? "")")
-                    .font(.title3)
-                    .padding(.trailing)
-            }
-            .padding(.horizontal)
         }
-        .frame(width: .infinity, height: 500)
+        .frame(maxWidth: .infinity, maxHeight: 500)
 //        .background(Color.red)
         .contentShape(Rectangle())
         .onTapGesture(count: 2) {
@@ -41,7 +38,7 @@ struct TechQuoteView: View {
     }
 }
 
-// Buscar la forma de presentar una Preview.
+// Presentar una Preview.
 #Preview {
     TechQuoteView(viewModel: TechQuoteViewModel())
 }
