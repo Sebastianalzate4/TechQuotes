@@ -10,6 +10,8 @@ import Foundation
 @Observable
 final class TechQuoteViewModel {
     
+    // Hacer una sola llamada a red cuando inicialice la app y no cada vez que se haga doble tap, así solo sería lanzar una quote aleatoria del array.
+    
     var quotes: [TechQuote] = []
     var randomQuote: TechQuote? // Intentar usar var randomQuote: String = "" para no tener que lidiar con opcionales.
     
@@ -42,3 +44,5 @@ final class TechQuoteViewModel {
         }
     }
 }
+
+// Crear un enum para el control de errores. Pero antes, revisar cómo controlar la ausencia de conexión a internet para hacerlos de la mano.

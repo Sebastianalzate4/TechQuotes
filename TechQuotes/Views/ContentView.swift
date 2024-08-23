@@ -9,35 +9,25 @@ import SwiftUI
 
 struct ContentView: View {
     
+    // Configurar la LaunchScreen para todos los dispositivos disponibles.
+    
     @State private var viewModel = TechQuoteViewModel()
     @State private var renderedImage: Image?
     @Environment(\.colorScheme) private var colorScheme
-    private var deviceType = UIDevice.current.userInterfaceIdiom
-    // Acceder a las variables de entorno horizontal y vertical para cuando el celular esté en landscape poder modificar el tamaño del botón y de la quote para que no se recorte.
+//    private var deviceType = UIDevice.current.userInterfaceIdiom
     
     var body: some View {
+        
         GeometryReader { geometry in
             
             VStack {
-
-                if colorScheme == .light {
-                    Image("TechQuotesLogoLight")
-                        .resizable()
-                        .scaledToFit()
-                        .background(Color.orange)
-                        .frame(maxWidth: 200)
-                        .padding(.top, geometry.safeAreaInsets.top)
-                } else {
-                    Image("TechQuotesLogoDark")
-                        .resizable()
-                        .scaledToFit()
-                        .background(Color.orange)
-                        .frame(maxWidth: 200)
-                        .padding(.top, geometry.safeAreaInsets.top)
-                }
                 
+                Image(colorScheme == .light ? "TechQuotesLogoLight" : "TechQuotesLogoDark")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: 200)
+                    .padding(.top, geometry.safeAreaInsets.top)
                 
-                Spacer()
                 
                 TechQuoteView(viewModel: viewModel)
                     .onAppear {
@@ -48,6 +38,7 @@ struct ContentView: View {
                     }
                     .onChange(of: viewModel.randomQuote) {
                         // Analizar lo que se debe modificar para no disminuir la calidad de la imagen al ser exportada.
+                        // Revisar por qué la imagen se exporta en formato PNG?
                         let size = geometry.size // Obtener el tamaño de la vista en el simulador
                         let rendered = ImageRenderer(content: TechQuoteView(viewModel: viewModel)
                             .frame(width: size.width, height: size.height))
@@ -61,7 +52,7 @@ struct ContentView: View {
                 
                 if let renderedImage {
                     ShareLink("Export", item: renderedImage, preview: SharePreview(Text("Shared image"), image: renderedImage))
-                        .frame(maxWidth: deviceType == .phone ? .infinity : 200)
+                        .frame(maxWidth: 200)
                         .frame(height: 50)
                         .font(.headline)
                         .bold()
@@ -75,6 +66,7 @@ struct ContentView: View {
         }
     }
 }
+
 
 
 #Preview {
