@@ -26,6 +26,8 @@ struct TechQuoteView: View {
         
         VStack(alignment: .trailing) {
             Text(viewModel.randomQuote?.quote ?? "")
+                .transition(.move(edge: .bottom))
+                .animation(.easeInOut(duration: 0.5), value: viewModel.randomQuote)
                 .italic()
 //                .font(isPhone && isLandscape ? .title3 : .title2)
                 .font(isPad ? .title : (isPhone && isLandscape ? .headline : .title2))
@@ -34,12 +36,14 @@ struct TechQuoteView: View {
          
             Text("~ \(viewModel.randomQuote?.author ?? "")")
 //                .font(isPhone && isLandscape ? .headline : .title3)
+                .transition(.move(edge: .bottom))
+                .animation(.easeInOut(duration: 0.5), value: viewModel.randomQuote)
                 .font(isPad ? .title2 : (isPhone && isLandscape ? .subheadline : .title3))
                 .padding()
             
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-//        .frame(maxWidth: .infinity, maxHeight: 500)
+//        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .frame(maxWidth: .infinity, maxHeight: 500)
 //        .background(Color.red)
         .contentShape(Rectangle())
         .onTapGesture(count: 2) {

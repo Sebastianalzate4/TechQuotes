@@ -13,10 +13,19 @@ struct ContentView: View {
     
     @State private var viewModel = TechQuoteViewModel()
     @State private var renderedImage: Image?
+    
+    @State private var logoOpacity = 0.0
+    @State private var logoScale: CGFloat = 0.5
+    
     @Environment(\.colorScheme) private var colorScheme
-//    private var deviceType = UIDevice.current.userInterfaceIdiom
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
+    private let isPhone = UIDevice.current.userInterfaceIdiom == .phone
+    private let isPad = UIDevice.current.userInterfaceIdiom == .pad
     
     var body: some View {
+        
+        let isLandscape = verticalSizeClass == .compact && (horizontalSizeClass == .compact || horizontalSizeClass == .regular)
         
         GeometryReader { geometry in
             
@@ -25,9 +34,19 @@ struct ContentView: View {
                 Image(colorScheme == .light ? "TechQuotesLogoLight" : "TechQuotesLogoDark")
                     .resizable()
                     .scaledToFit()
-                    .frame(maxWidth: 200)
-                    .padding(.top, geometry.safeAreaInsets.top)
+                    .frame(maxWidth: isPad ? 300 : 200)
+                    .padding(.top, isPhone && isLandscape ? geometry.size.height * 0.05 : geometry.safeAreaInsets.top)
+                //  .padding(.top, geometry.safeAreaInsets.top)
+                    .opacity(logoOpacity)
+                    .scaleEffect(logoScale)
+                    .onAppear {
+                        withAnimation(.easeInOut(duration: 1.0)) {
+                            logoOpacity = 1.0
+                            logoScale = 1.0
+                        }
+                    }
                 
+                Spacer()
                 
                 TechQuoteView(viewModel: viewModel)
                     .onAppear {
@@ -52,9 +71,9 @@ struct ContentView: View {
                 
                 if let renderedImage {
                     ShareLink("Export", item: renderedImage, preview: SharePreview(Text("Shared image"), image: renderedImage))
-                        .frame(maxWidth: 200)
-                        .frame(height: 50)
-                        .font(.headline)
+                        .frame(maxWidth: isPad ? 300 : 200)
+                        .frame(height: isPad ? 70 : 50)
+                        .font(isPad ? .title : .headline)
                         .bold()
                         .foregroundColor(colorScheme == .light ? .white : .black)
                         .background(colorScheme == .light ? .black : .white)
